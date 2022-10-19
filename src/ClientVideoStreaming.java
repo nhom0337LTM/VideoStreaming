@@ -156,22 +156,6 @@ public class ClientVideoStreaming {
             }
         }
     }
-/*
-    class tearButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            RTSPSeqNb++;
-            send_RTSP_request("TEARDOWN");
-            if (parse_server_response() != 200) {
-                System.out.println("Invalid Server Response");
-            } else {
-                state = INIT;
-                timer.stop();
-                System.exit(0);
-            }
-        }
-    }
-
-*/
 
     class timerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
