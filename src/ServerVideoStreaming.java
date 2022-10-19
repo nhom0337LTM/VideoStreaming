@@ -8,7 +8,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.Timer;
 
-public class Server extends JFrame implements ActionListener {
+public class ServerVideoStreaming extends JFrame implements ActionListener {
     DatagramSocket RTPsocket; 
     DatagramPacket senddp;
     InetAddress ClientIPAddr; 
@@ -27,7 +27,7 @@ public class Server extends JFrame implements ActionListener {
     final static int SETUP = 3;
     final static int PLAY = 4;
     final static int PAUSE = 5;
-    final static int TEARDOWN = 6;
+    //final static int TEARDOWN = 6;
     static int state; 
     Socket RTSPsocket;
     static BufferedReader RTSPBufferedReader;
@@ -37,7 +37,7 @@ public class Server extends JFrame implements ActionListener {
     int RTSPSeqNb = 0; 
     final static String CRLF = "\r\n";
 
-    public Server() {
+    public ServerVideoStreaming() {
         super("Server");
         timer = new Timer(FRAME_PERIOD, this);
         timer.setInitialDelay(0);
@@ -50,12 +50,12 @@ public class Server extends JFrame implements ActionListener {
             }
         });
 
-        label = new JLabel("Send frame", JLabel.CENTER);
+        label = new JLabel("Send", JLabel.CENTER);
         getContentPane().add(label, BorderLayout.CENTER);
     }
 
     public static void main(String argv[]) throws Exception {
-        Server theServer = new Server();
+        ServerVideoStreaming theServer = new ServerVideoStreaming();
         theServer.pack();
         theServer.setVisible(true);
         int RTSPport = Integer.parseInt("1107");
@@ -99,13 +99,6 @@ public class Server extends JFrame implements ActionListener {
                     theServer.timer.stop();
                     state = READY;
                     System.out.println("New RTSP state: READY");
-                } else if (request_type == TEARDOWN) {
-                    theServer.send_RTSP_response();
-                    theServer.timer.stop();
-                    theServer.RTSPsocket.close();
-                    theServer.RTPsocket.close();
-
-                    System.exit(0);
                 }
             }
         } catch (BindException e) {
@@ -155,8 +148,6 @@ public class Server extends JFrame implements ActionListener {
                 request_type = PLAY;
             } else if ((new String(request_type_string)).compareTo("PAUSE") == 0) {
                 request_type = PAUSE;
-            } else if ((new String(request_type_string)).compareTo("TEARDOWN") == 0) {
-                request_type = TEARDOWN;
             }
 
             if (request_type == SETUP) {

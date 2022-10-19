@@ -1,4 +1,3 @@
-
 import RTP.RTPpacket;
 import java.io.*;
 import java.net.*;
@@ -8,12 +7,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.Timer;
 
-public class Client {
+public class ClientVideoStreaming {
     JFrame f = new JFrame("Client");
-    JButton setupButton = new JButton("Setup");
+    JButton setupButton = new JButton("Open");
     JButton playButton = new JButton("Play");
     JButton pauseButton = new JButton("Pause");
-    JButton tearButton = new JButton("Teardown");
     JPanel mainPanel = new JPanel();
     JPanel buttonPanel = new JPanel();
     JLabel iconLabel = new JLabel();
@@ -36,7 +34,7 @@ public class Client {
     final static String CRLF = "\r\n";
     static int MJPEG_TYPE = 26; 
 
-    public Client() {
+    public ClientVideoStreaming() {
         f.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
@@ -47,11 +45,10 @@ public class Client {
         buttonPanel.add(setupButton);
         buttonPanel.add(playButton);
         buttonPanel.add(pauseButton);
-        buttonPanel.add(tearButton);
+        //buttonPanel.add(tearButton);
         setupButton.addActionListener(new setupButtonListener());
         playButton.addActionListener(new playButtonListener());
         pauseButton.addActionListener(new pauseButtonListener());
-        tearButton.addActionListener(new tearButtonListener());
         iconLabel.setIcon(null);
         mainPanel.setLayout(null);
         mainPanel.add(iconLabel);
@@ -68,12 +65,12 @@ public class Client {
     }
 
     public static void main(String argv[]) throws Exception {
-        Client theClient = new Client();
+        ClientVideoStreaming theClient = new ClientVideoStreaming();
         int RTSP_server_port = Integer.parseInt("1107");
         String ServerHost = "localhost";
         InetAddress ServerIPAddr = InetAddress.getByName(ServerHost);
         System.out.println(ServerIPAddr);
-        VideoFileName = "D:\\movie.MJPEG";
+        VideoFileName = "D:\\downloadfile\\b.MJPEG";
         try {
             theClient.RTSPsocket = new Socket(ServerIPAddr, RTSP_server_port);
             RTSPBufferedReader = new BufferedReader(new InputStreamReader(
@@ -159,7 +156,7 @@ public class Client {
             }
         }
     }
-
+/*
     class tearButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             RTSPSeqNb++;
@@ -173,6 +170,8 @@ public class Client {
             }
         }
     }
+
+*/
 
     class timerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -195,6 +194,8 @@ public class Client {
             }
         }
     }
+
+
 
     private int parse_server_response() {
         int reply_code = 0;
